@@ -242,6 +242,15 @@ int main() {
           	vector<double> next_x_vals;
           	vector<double> next_y_vals;
 
+						// Set the distance increment in meters. The car moves at 50 Hz, so if the increment is set to 0.5 m/move, the speed is 25 m/s, or about 50 mph
+
+						// Step 1: Drive in a straight line
+						double dist_inc = 0.5;
+						for (int i = 0; i < 50; i++) {
+							next_x_vals.push_back(car_x+(dist_inc*i)*cos(deg2rad(car_yaw)));
+							next_y_vals.push_back(car_y+(dist_inc*i)*sin(deg2rad(car_yaw)));
+						}
+
 
           	// TODO: define a path made up of (x,y) points that the car will visit sequentially every .02 seconds
           	msgJson["next_x"] = next_x_vals;
