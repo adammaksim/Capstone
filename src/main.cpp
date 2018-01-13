@@ -14,6 +14,12 @@ using namespace std;
 // for convenience
 using json = nlohmann::json;
 
+// Reference information:
+// The track is 6945.554 meters around (about 4.32 miles). If the car averages near 50 MPH, then it should take a little more than 5 minutes for it to go all the way around the highway.
+// The highway has 6 lanes total - 3 heading in each direction. Each lane is 4 m wide and the car should only ever be in one of the 3 lanes on the right-hand side.
+// The d vector can be used to calculate lane positions. For example, if you want to be in the left lane at some waypoint just add the waypoint's (x,y) coordinates with the d vector multiplied by 2. Since the lane is 4 m wide, the middle of the left lane (the lane closest to the double-yellow diving line) is 2 m from the waypoint.
+// If you would like to be in the middle lane, add the waypoint's coordinates to the d vector multiplied by 6 = (2+4), since the center of the middle lane is 4 m from the center of the left lane, which is itself 2 m from the double-yellow diving line and the waypoints.
+
 // For converting back and forth between radians and degrees.
 constexpr double pi() { return M_PI; }
 double deg2rad(double x) { return x * pi() / 180; }
@@ -185,7 +191,7 @@ int main() {
   	istringstream iss(line);
   	double x;
   	double y;
-  	float s;
+  	float s;  // distance along the direction of the road
   	float d_x;
   	float d_y;
   	iss >> x;
@@ -235,6 +241,7 @@ int main() {
           	double end_path_d = j[1]["end_path_d"];
 
           	// Sensor Fusion Data, a list of all other cars on the same side of the road.
+						// The data format for each car is: [ id, x, y, vx, vy, s, d]
           	auto sensor_fusion = j[1]["sensor_fusion"];
 
           	json msgJson;
