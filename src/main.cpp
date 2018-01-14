@@ -280,8 +280,12 @@ int main() {
 								int gap = 30; // m
 								if ((check_car_s > car_s) && ((check_car_s-car_s) < gap)) {
 									// Lower the reference velocity so we don't crash into the car in front of us
-									// Could also flag to try to change lanes
 									too_close = true;
+
+									// Flag to try to change lanes
+									if (lane > 0) {
+										lane = 0;
+									} 
 								}
 							}
 						}
