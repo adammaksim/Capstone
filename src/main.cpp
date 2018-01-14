@@ -212,9 +212,9 @@ int main() {
 	int lane = 1;
 
 	// Reference velocity to target
-	double ref_val = 49.5; // mph
+	double ref_vel = 49.5; // mph
 
-  h.onMessage([&map_waypoints_x,&map_waypoints_y,&map_waypoints_s,&map_waypoints_dx,&map_waypoints_dy,&lane,&ref_val](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length,
+  h.onMessage([&map_waypoints_x,&map_waypoints_y,&map_waypoints_s,&map_waypoints_dx,&map_waypoints_dy,&lane,&ref_vel](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length,
                      uWS::OpCode opCode) {
     // "42" at the start of the message means there's a websocket message event.
     // The 4 signifies a websocket message
@@ -254,64 +254,45 @@ int main() {
 
 						int prev_size = previous_path_x.size();
 
-          	// vector<double> next_x_vals;
-          	// vector<double> next_y_vals;
+						if (prev_size > 0) {
+							car_s = end_path_s;
+						}
 
-						// Define a path made up of (x,y) points that the car will visit sequentially every .02 seconds
+						bool too_close = false;
 
-						// Set the distance increment in meters. The car moves at 50 Hz, so if the increment is set to 0.5 m/move, the speed is 25 m/s, or about 50 mph
+						// Find ref_v to use, see if car is in lane
+						for (int i = 0; i < sensor_fusion.size(); i++) {
+							// Car is in my lane
+							float d = sensor_fusion[i][6];
 
-						// Step 1: Drive in a straight line
-						// double dist_inc = 0.5;
-						// for (int i = 0; i < 50; i++) {
-						// 	next_x_vals.push_back(car_x+(dist_inc*i)*cos(deg2rad(car_yaw)));
-						// 	next_y_vals.push_back(car_y+(dist_inc*i)*sin(deg2rad(car_yaw)));
-						// }
+							// Check width of lane, in case cars are merging into our lane
+							if (d < (2+4*lane+2) && d > (2+4*lane-2)) {
+								double vx = sensor_fusion[i][3];
+								double vy = sensor_fusion[i][4];
+								double check_speed = sqrt(vx*vx + vy*vy);
+								double check_car_s = sensor_fusion[i][5];
 
-						// Step 2: Drive in a more complex (circular) path
-						// double pos_x;
-						// double pos_y;
-						// double angle;
-						// int path_size = previous_path_x.size();
+								// If using previous points can project an s value outwards in time
+								// (What position we will be in in the future)
+								// check s values greater than ours and s gap
+								check_car_s += ((double)prev_size*0.02*check_speed);
 
-						// for (int i = 0; i < path_size; i++) {
-						// 	next_x_vals.push_back(previous_path_x[i]);
-            //   next_y_vals.push_back(previous_path_y[i]);
-						// }
+								int gap = 30; // m
+								if ((check_car_s > car_s) && ((check_car_s-car_s) < gap)) {
+									// Lower the reference velocity so we don't crash into the car in front of us
+									// Could also flag to try to change lanes
+									ref_vel = 29.5; // mph
+									// too_close = true
+								}
+							}
+						}
 
-						// if (path_size == 0) {
-						// 	pos_x = car_x;
-						// 	pos_y = car_y;
-						// 	angle = deg2rad(car_yaw);
-						// } else {
-						// 	pos_x = previous_path_x[path_size-1];
-            //   pos_y = previous_path_y[path_size-1];
 
-            //   double pos_x2 = previous_path_x[path_size-2];
-            //   double pos_y2 = previous_path_y[path_size-2];
-            //   angle = atan2(pos_y-pos_y2,pos_x-pos_x2);
-						// }
 
-						// double dist_inc = 0.5;
-						// for(int i = 0; i < 50-path_size; i++)
-						// {    
-						// 		next_x_vals.push_back(pos_x+(dist_inc)*cos(angle+(i+1)*(pi()/100)));
-						// 		next_y_vals.push_back(pos_y+(dist_inc)*sin(angle+(i+1)*(pi()/100)));
-						// 		pos_x += (dist_inc)*cos(angle+(i+1)*(pi()/100));
-						// 		pos_y += (dist_inc)*sin(angle+(i+1)*(pi()/100));
-						// }
 
-						// Step 3: Stay in lane
-						// double dist_inc = 0.5;
-						// for (int i = 0; i < 50; i++) {
-						// 	double next_s = car_s+(i+1)*dist_inc;
-						// 	double next_d = 6; // Stay in constant lane for now
-						// 	vector<double> xy = getXY(next_s, next_d, map_waypoints_s, map_waypoints_x, map_waypoints_y);
-						// 	next_x_vals.push_back(xy[0]);
-						// 	next_y_vals.push_back(xy[1]);
-						// }
 
-						// Step 4: Use spline
+
+
 						// Create a list of widely spaced (x,y) waypoints, evenly spaced at 30m
 						vector<double> ptsx;
 						vector<double> ptsy;
@@ -399,7 +380,7 @@ int main() {
 
 						// Fill up the rest of the path planner to always output 50 points
 						for (int i = 1; i <= 50 - previous_path_x.size(); i++) {
-							double N = (target_dist/(.02*ref_val/2.24));
+							double N = (target_dist/(.02*ref_vel/2.24));
 							double x_point = x_add_on + (target_x) / N;
 							double y_point = s(x_point);
 
