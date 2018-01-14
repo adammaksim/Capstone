@@ -249,7 +249,7 @@ int main() {
           	double end_path_d = j[1]["end_path_d"];
 
           	// Sensor Fusion Data, a list of all other cars on the same side of the road.
-						// The data format for each car is: [ id, x, y, vx, vy, s, d]
+			// The data format for each car is: [ id, x, y, vx, vy, s, d]
           	auto sensor_fusion = j[1]["sensor_fusion"];
 
 			int prev_size = previous_path_x.size();
