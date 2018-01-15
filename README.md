@@ -27,9 +27,9 @@ Refer to Udacity's [original README](./Udacity_README.md) for instructions on se
 
 ## Implementation
 
-Other than the addition of the header file [spline.h](./src/spline.h), the rest of the implementation was completed in the file [main.cpp](./src/main.cpp). Udacity provided a number of helper functions in [main.cpp](./src/main.cpp). My implementation occurred in the telemetry section of the function h.onMessage(), between lines 233 and 445.
+Other than the addition of the header file [spline.h](./src/spline.h) from [this page](http://kluge.in-chemnitz.de/opensource/spline/), the rest of the implementation was completed in the file [main.cpp](./src/main.cpp). Udacity provided a number of helper functions in [main.cpp](./src/main.cpp). My implementation occurred in the telemetry section of the function h.onMessage(), between lines 233 and 445.
 
-There are numerous ways to implement this project successfully. My implementation involves the use of [splines](https://en.wikipedia.org/wiki/Spline_(mathematics)) to generate smooth trajectories. This is similar to an implementation provided in [Udacity's walk-through video](https://www.youtube.com/watch?v=7sI3VHFPP0w).
+There are numerous ways to implement this project successfully. My implementation involves the use of [cubic splines](https://en.wikipedia.org/wiki/Spline_(mathematics)) to generate smooth trajectories. This is similar to an implementation provided in [Udacity's walk-through video](https://www.youtube.com/watch?v=7sI3VHFPP0w).
 
 The implementation is divided into two categories:
 1. Prediction and decision based on environmental cues
