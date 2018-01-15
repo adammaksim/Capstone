@@ -2,9 +2,9 @@
 
 Udacity [Self-Driving Car Engineer Nanodegree](https://www.udacity.com/course/self-driving-car-engineer-nanodegree--nd013)
 
-[![Path Planning Video](https://img.youtube.com/vi/34YczKN08eo/0.jpg)](https://www.youtube.com/watch?v=34YczKN08eo "Path Planning Video")
+![Vehicle Changing Lanes](Driving_Image.md)
 
-[Click for video](https://www.youtube.com/watch?v=34YczKN08eo&feature=youtu.be)
+[Click here](https://www.youtube.com/watch?v=34YczKN08eo&feature=youtu.be) for a video.
 
 ## Overview
 
