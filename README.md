@@ -3,11 +3,14 @@
 Udacity [Self-Driving Car Engineer Nanodegree](https://www.udacity.com/course/self-driving-car-engineer-nanodegree--nd013)
 
 [![Path Planning Video](https://img.youtube.com/vi/34YczKN08eo/0.jpg)](https://www.youtube.com/watch?v=34YczKN08eo "Path Planning Video")
+
 [Click for video](https://www.youtube.com/watch?v=34YczKN08eo&feature=youtu.be)
 
 ## Overview
 
-This project simulates a virtual highway with numerous cars running at speeds +- 10 mph of a 50 mph speed limit. The goal of was to program the "ego" car to:
+This project simulates a virtual highway with numerous cars running at speeds +- 10 mph of a 50 mph speed limit. 
+
+The goal of was to program the "ego" car to:
 * Stay as close to the speed limit without exceeding it
 * Drive inside the lane lines, except when changing lanes
 * Avoid all collisions, including going too slow and being rear-ended
@@ -18,15 +21,15 @@ The project comes with a list of waypoints around the highway. For all cars, loc
 
 The project must meet all points in the [rubric](https://review.udacity.com/#!/rubrics/1020/view). As shown in [the video](https://www.youtube.com/watch?v=34YczKN08eo&feature=youtu.be), this implementation can run at least 10 miles / 14 minutes without incident. 
 
-## Install and Rum
+## Install and Run
 
-Refer to Udacity's [original README](./Udacity_README) for instructions on setting up the environment and execution.
+Refer to Udacity's [original README](./Udacity_README.md) for instructions on setting up the environment and execution.
 
 ## Implementation
 
 Other than the addition of the header file [spline.h](./src/spline.h), the rest of the implementation was completed in the file [main.cpp](./src/main.cpp). Udacity provided a number of helper functions in [main.cpp](./src/main.cpp). My implementation occurred in the telemetry section of the function h.onMessage(), between lines 233 and 445.
 
-There are numerous ways to implement this project successfully. My implementation involves the use of [splines](https://en.wikipedia.org/wiki/Spline_(mathematics)) to generate smooth trajectories. This is similar to an implementation provided in [this video](https://www.youtube.com/watch?v=7sI3VHFPP0w).
+There are numerous ways to implement this project successfully. My implementation involves the use of [splines](https://en.wikipedia.org/wiki/Spline_(mathematics)) to generate smooth trajectories. This is similar to an implementation provided in [Udacity's walk-through video](https://www.youtube.com/watch?v=7sI3VHFPP0w).
 
 The implementation is divided into two categories:
 1. Prediction and decision based on environmental cues
@@ -86,7 +89,7 @@ for (int i = 0; i < sensor_fusion.size(); i++) {
 }
 ```
 
-In lines 261 to 307 of [main.cpp](./src/main.cpp), the positions of all the other vehicles are analyzed relative to the ego vehicle. If the ego vehicle is within 30 meters of the vehicle in front, the boolean "too_close" is flagged true. If vehicles are within that margin on the left or right, car_left or car_right are flagged true, respectively.
+In lines 261 to 307 of [main.cpp](./src/main.cpp), the positions of all the other vehicles are analyzed relative to the ego vehicle. If the ego vehicle is within 30 meters of the vehicle in front, the boolean too_close is flagged true. If vehicles are within that margin on the left or right, car_left or car_right are flagged true, respectively.
 
 ```cpp
 // Modulate the speed to avoid collisions. Change lanes if it is safe to do so (nobody to the side)
@@ -133,7 +136,7 @@ Lines 340 to 445 of [main.cpp](./src/main.cpp) compute the trajectory of the veh
 
 ```cpp
 // Create a list of widely spaced (x,y) waypoints, evenly spaced at 30m
-v`ector<double> ptsx;
+vector<double> ptsx;
 vector<double> ptsy;
 
 // Reference x, y, yaw states
