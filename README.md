@@ -2,7 +2,7 @@
 
 Udacity [Self-Driving Car Engineer Nanodegree](https://www.udacity.com/course/self-driving-car-engineer-nanodegree--nd013)
 
-![Vehicle Changing Lanes](Driving_Image.md)
+![Vehicle Changing Lanes](Driving_Image.png)
 
 [Click here](https://www.youtube.com/watch?v=34YczKN08eo&feature=youtu.be) for a video.
 
